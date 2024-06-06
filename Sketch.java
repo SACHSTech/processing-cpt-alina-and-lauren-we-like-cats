@@ -1,14 +1,16 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Sketch extends PApplet {
 	
+  PImage background;
 	
   /**
    * Called once at the beginning of execution, put your size all in this method
    */
   public void settings() {
 	// put your size call here
-    size(400, 400);
+    size(1400, 700);
   }
 
   /** 
@@ -17,6 +19,8 @@ public class Sketch extends PApplet {
    */
   public void setup() {
     background(210, 255, 173);
+    background = loadImage("White Background.jpg");
+    background.resize(background.width*width/2560, background.height*height/1440);
   }
 
   /**
@@ -25,11 +29,8 @@ public class Sketch extends PApplet {
   public void draw() {
 	  
 	// sample code, delete this stuff
-    stroke(128);
-    line(150, 25, 270, 350);  
+    image(background, 0, 0);
 
-    stroke(255);
-    line(50, 125, 70, 50);  
   }
   
   // define other methods down here.
