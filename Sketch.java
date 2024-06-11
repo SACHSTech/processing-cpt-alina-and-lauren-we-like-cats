@@ -4,7 +4,12 @@ import processing.core.PImage;
 public class Sketch extends PApplet {
 	
   PImage background;
+  PImage character;
+
+  int intPosX = 700;
+  int intPosY = 350;
 	
+
   /**
    * Called once at the beginning of execution, put your size all in this method
    */
@@ -18,9 +23,12 @@ public class Sketch extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
-    background(210, 255, 173);
     background = loadImage("White Background.jpg");
     background.resize(background.width*width/2560, background.height*height/1440);
+
+    character = loadImage("CatMC.png");
+    character.resize(character.width*2, character.height*2);   
+    
   }
 
   /**
@@ -28,10 +36,32 @@ public class Sketch extends PApplet {
    */
   public void draw() {
 	  
-	// sample code, delete this stuff
     image(background, 0, 0);
+
+    movement();
+
+    image(character, intPosX, intPosY);
 
   }
   
   // define other methods down here.
+
+  public void movement() {
+
+    if (keyPressed) {
+      if (keyCode == UP) {
+        intPosY -= 5;
+      }
+      else if (keyCode == DOWN) {
+        intPosY += 5;
+      }
+      else if (keyCode == RIGHT) {
+        intPosX += 5;
+      }
+      else if (keyCode == LEFT) {
+        intPosX -= 5;
+      }
+    }
+
+  }
 }
