@@ -6,8 +6,18 @@ public class Sketch extends PApplet {
   PImage background;
   PImage character;
 
-  int intPosX = 700;
-  int intPosY = 350;
+  boolean leftPressed = false;
+  boolean rightPressed = false;
+  int intDirection = 1;
+
+
+  int intPosX = 200;
+  int intPosY = 200;
+  
+  double dblVelY = 1;
+
+  PImage[] arrMC = new PImage[2];
+  int intFrame = 0;
 	
 
   /**
@@ -23,12 +33,16 @@ public class Sketch extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
-    background = loadImage("White Background.jpg");
-    background.resize(background.width*width/2560, background.height*height/1440);
+    background = loadImage("OIG1..jpg");
+    background.resize(background.width*width/1024, background.height*height/512);
 
-    character = loadImage("CatMC.png");
-    character.resize(character.width*2, character.height*2);   
-    
+    arrMC[0] = loadImage("CatMCLeft.png");
+    arrMC[1] = loadImage("CatMCRight.png");
+
+    for (int i = 0; i < arrMC.length; i++){
+      arrMC[i].resize(arrMC[i].width/2, arrMC[i].height/2);   
+    }
+
   }
 
   /**
@@ -40,6 +54,30 @@ public class Sketch extends PApplet {
 
     movement();
 
+    drawCharacter();
+
+  }
+
+  public void drawCharacter() {
+
+    if(intDirection == 1){
+      intFrame = 1;
+    }
+    else if (intDirection == -1){
+      intFrame = 0;
+    }
+    else {
+      intFrame = 1;
+    }
+
+    character = arrMC[intFrame];
+
+    intPosY += dblVelY;
+
+    if (intPosY >= 220 || intPosY <= 180) {
+      dblVelY = -dblVelY;
+    }
+
     image(character, intPosX, intPosY);
 
   }
@@ -48,20 +86,29 @@ public class Sketch extends PApplet {
 
   public void movement() {
 
-    if (keyPressed) {
-      if (keyCode == UP) {
-        intPosY -= 5;
-      }
-      else if (keyCode == DOWN) {
-        intPosY += 5;
-      }
-      else if (keyCode == RIGHT) {
-        intPosX += 5;
-      }
-      else if (keyCode == LEFT) {
-        intPosX -= 5;
-      }
+    if (leftPressed || rightPressed) {
+      intPosX += 5 * intDirection;
     }
 
+  }
+
+  public void keyPressed() {
+    if (key == 'a') {
+      leftPressed = true;
+      intDirection = -1;
+    }
+    else if (key == 'd') {
+      rightPressed = true;
+      intDirection = 1;
+    }
+  }
+  
+  public void keyReleased() {
+    if (key == 'a') {
+      leftPressed = false;
+    }
+    else if (key == 'd') {
+      rightPressed = false;
+    }
   }
 }
