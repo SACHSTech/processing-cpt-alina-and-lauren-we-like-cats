@@ -3,21 +3,38 @@ import processing.core.PImage;
 
 public class Sketch extends PApplet {
 	
+  // background and character PImages
   PImage background;
   PImage character;
 
+  // movement variables. Checking for keys pressed and direction faced
   boolean leftPressed = false;
   boolean rightPressed = false;
   int intDirection = 1;
 
 
-  int intPosX = 200;
+  // starting position
+  int intPosX = 100;
   int intPosY = 200;
+  int intBaseY = 200;
   
+  // velocity for floating
   double dblVelY = 1;
 
+  // arrays for the backgrounds and main character's movements
+  PImage[] arrBackground = new PImage[3];
   PImage[] arrMC = new PImage[2];
   int intFrame = 0;
+
+  // level to indicate background
+  int intLevel = 0;
+
+  // Character size must change
+  int[][] charDimensions = {
+    {807/2, 428},
+    {807/2, 428},
+    {807/4, 214}
+  };
 	
 
   /**
@@ -33,15 +50,15 @@ public class Sketch extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
-    background = loadImage("OIG1..jpg");
-    background.resize(background.width*width/1024, background.height*height/512);
+
+    arrBackground[0] = loadImage("Bedroom.png");
+    arrBackground[1] = loadImage("Kitchen.jpg");
+    arrBackground[2] = loadImage("Town.png");
 
     arrMC[0] = loadImage("CatMCLeft.png");
     arrMC[1] = loadImage("CatMCRight.png");
 
-    for (int i = 0; i < arrMC.length; i++){
-      arrMC[i].resize(arrMC[i].width/2, arrMC[i].height/2);   
-    }
+    
 
   }
 
@@ -50,12 +67,29 @@ public class Sketch extends PApplet {
    */
   public void draw() {
 	  
-    image(background, 0, 0);
+    for (int i = 0; i < arrMC.length; i++){
+      arrMC[i].resize(charDimensions[intLevel][0], charDimensions[intLevel][1]);   
+    }
+
+    drawBackground();
 
     movement();
 
     drawCharacter();
 
+  }
+
+  public void drawBackground() {
+    background = arrBackground[intLevel];
+
+    if (intLevel == 0 || intLevel == 1) {
+      image(background, 0, 0);
+    }
+    else if (intLevel == 2) {
+      intBaseY = 400;
+      int intBGX = 100 + intPosX;
+      image(background, -intBGX, 0);
+    }
   }
 
   public void drawCharacter() {
@@ -74,7 +108,7 @@ public class Sketch extends PApplet {
 
     intPosY += dblVelY;
 
-    if (intPosY >= 220 || intPosY <= 180) {
+    if (intPosY >= intBaseY + 20 || intPosY <= intBaseY - 20) {
       dblVelY = -dblVelY;
     }
 
@@ -86,8 +120,23 @@ public class Sketch extends PApplet {
 
   public void movement() {
 
-    if (leftPressed || rightPressed) {
-      intPosX += 5 * intDirection;
+    if (leftPressed) {
+      if (intLevel != 0 && intPosX <= -100) {
+        intLevel --;
+        intPosX = 1200;
+      }
+      else if (intPosX >= -100) {
+        intPosX -= 5;
+      }
+    }
+    else if (rightPressed) {
+      if (intLevel != (arrBackground.length - 1) && intPosX >= 1200) {
+        intLevel ++;
+        intPosX = 100;
+      }
+      else if (intPosX <= 1200) {
+        intPosX += 5;
+      }
     }
 
   }
