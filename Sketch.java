@@ -13,6 +13,8 @@ public class Sketch extends PApplet {
   boolean rightPressed = false;
   int intDirection = 1;
 
+  int intBGX;
+  //int inWorkerX = 2600;
 
   // starting position
   int intPosX = 100;
@@ -25,12 +27,7 @@ public class Sketch extends PApplet {
   // arrays for the animations and backgrounds
   PImage[] arrBackground = new PImage[3];
   PImage[] arrMC = new PImage[2];
-  PImage[] arrWoodworker = new PImage[6];
-  int intWorkerFrame = 0;
   int intFrame = 0;
-
-  // intBGX is the x-coordinate for the background in longer backgrounds
-  int intBGX;
 
   // level to indicate background
   int intLevel = 2;
@@ -64,16 +61,7 @@ public class Sketch extends PApplet {
     arrMC[0] = loadImage("CatMCLeft.png");
     arrMC[1] = loadImage("CatMCRight.png");
 
-    arrWoodworker[0] = loadImage("WoodworkerCat1.png");
-    arrWoodworker[1] = loadImage("WoodworkerCat2.png");
-    arrWoodworker[2] = loadImage("WoodworkerCat3.png");
-    arrWoodworker[3] = loadImage("WoodworkerCat4.png");
-    arrWoodworker[4] = loadImage("WoodworkerCat5.png");
-    arrWoodworker[5] = loadImage("WoodworkerCat6.png"); 
-
-    for (int i = 0; i < arrWoodworker.length; i++) {
-      arrWoodworker[i].resize(200, 200);
-    }
+    woodworker = loadImage("WoodworkerCat.png");
 
   }
 
@@ -92,28 +80,14 @@ public class Sketch extends PApplet {
 
     drawCharacter();
 
+    woodworker();
+
   }
 
-  public void woodworkerAnimation() {
-
-    woodworker = arrWoodworker[intWorkerFrame];
+  public void woodworker() {
 
     if (intLevel == 2) {
-      image(woodworker, 1300, 400);
-    }
-
-    // random number to randomize when woodworker blinks
-    float fltX = random(0, 100);
-    
-    if (fltX < 0.5) {
-      // Closing eyes
-      for (int i = 0; i < arrWoodworker.length; i++) {
-        intWorkerFrame = i;
-      }
-      // Opening eyes
-      for (int i = 5; i >= 0; i--) {
-        intWorkerFrame = i;
-      }
+      image(woodworker, 1200, 400);
     }
 
   }
@@ -122,12 +96,13 @@ public class Sketch extends PApplet {
     background = arrBackground[intLevel];
 
     if (intLevel == 0 || intLevel == 1) {
+      intBaseY = 200;
       image(background, 0, 0);
     }
     else if (intLevel == 2) {
       intBaseY = 400;
-      int intBGX = 100 + intPosX;
-      image(background, -intBGX, 0);
+      intBGX = -100 - intPosX;
+      image(background, intBGX, 0);
     }
   }
 
@@ -163,6 +138,12 @@ public class Sketch extends PApplet {
       if (intLevel != 0 && intPosX <= -100) {
         intLevel --;
         intPosX = 1200;
+        if (intLevel == 2) {
+          intPosY = 400;
+        }
+        else {
+          intPosY = 200;
+        }
       }
       else if (intPosX >= -100) {
         intPosX -= 5;
@@ -172,6 +153,12 @@ public class Sketch extends PApplet {
       if (intLevel != (arrBackground.length - 1) && intPosX >= 1200) {
         intLevel ++;
         intPosX = 100;
+        if (intLevel == 2) {
+          intPosY = 400;
+        }
+        else {
+          intPosY = 200;
+        }
       }
       else if (intPosX <= 1200) {
         intPosX += 5;
