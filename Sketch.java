@@ -6,6 +6,7 @@ public class Sketch extends PApplet {
   // background and character PImages
   PImage background;
   PImage character;
+  PImage woodworker;
 
   // movement variables. Checking for keys pressed and direction faced
   boolean leftPressed = false;
@@ -21,13 +22,18 @@ public class Sketch extends PApplet {
   // velocity for floating
   double dblVelY = 1;
 
-  // arrays for the backgrounds and main character's movements
+  // arrays for the animations and backgrounds
   PImage[] arrBackground = new PImage[3];
   PImage[] arrMC = new PImage[2];
+  PImage[] arrWoodworker = new PImage[6];
+  int intWorkerFrame = 0;
   int intFrame = 0;
 
+  // intBGX is the x-coordinate for the background in longer backgrounds
+  int intBGX;
+
   // level to indicate background
-  int intLevel = 0;
+  int intLevel = 2;
 
   // Character size must change
   int[][] charDimensions = {
@@ -58,7 +64,16 @@ public class Sketch extends PApplet {
     arrMC[0] = loadImage("CatMCLeft.png");
     arrMC[1] = loadImage("CatMCRight.png");
 
-    
+    arrWoodworker[0] = loadImage("WoodworkerCat1.png");
+    arrWoodworker[1] = loadImage("WoodworkerCat2.png");
+    arrWoodworker[2] = loadImage("WoodworkerCat3.png");
+    arrWoodworker[3] = loadImage("WoodworkerCat4.png");
+    arrWoodworker[4] = loadImage("WoodworkerCat5.png");
+    arrWoodworker[5] = loadImage("WoodworkerCat6.png"); 
+
+    for (int i = 0; i < arrWoodworker.length; i++) {
+      arrWoodworker[i].resize(200, 200);
+    }
 
   }
 
@@ -76,6 +91,30 @@ public class Sketch extends PApplet {
     movement();
 
     drawCharacter();
+
+  }
+
+  public void woodworkerAnimation() {
+
+    woodworker = arrWoodworker[intWorkerFrame];
+
+    if (intLevel == 2) {
+      image(woodworker, 1300, 400);
+    }
+
+    // random number to randomize when woodworker blinks
+    float fltX = random(0, 100);
+    
+    if (fltX < 0.5) {
+      // Closing eyes
+      for (int i = 0; i < arrWoodworker.length; i++) {
+        intWorkerFrame = i;
+      }
+      // Opening eyes
+      for (int i = 5; i >= 0; i--) {
+        intWorkerFrame = i;
+      }
+    }
 
   }
 
