@@ -63,6 +63,8 @@ public class Sketch extends PApplet {
 
     woodworker = loadImage("WoodworkerCat.png");
 
+    woodworker.resize(200, 200);
+
   }
 
   /**
@@ -78,17 +80,17 @@ public class Sketch extends PApplet {
 
     movement();
 
-    drawCharacter();
-
     woodworker();
 
+    drawCharacter();
   }
 
   public void woodworker() {
 
     if (intLevel == 2) {
-      image(woodworker, 1200, 400);
+      image(woodworker, 2000 + intBGX, 400);
     }
+  
 
   }
 
@@ -100,7 +102,7 @@ public class Sketch extends PApplet {
       image(background, 0, 0);
     }
     else if (intLevel == 2) {
-      intBaseY = 400;
+      intBaseY = 350;
       intBGX = -100 - intPosX;
       image(background, intBGX, 0);
     }
@@ -139,7 +141,7 @@ public class Sketch extends PApplet {
         intLevel --;
         intPosX = 1200;
         if (intLevel == 2) {
-          intPosY = 400;
+          intPosY = 350;
         }
         else {
           intPosY = 200;
@@ -154,7 +156,7 @@ public class Sketch extends PApplet {
         intLevel ++;
         intPosX = 100;
         if (intLevel == 2) {
-          intPosY = 400;
+          intPosY = 350;
         }
         else {
           intPosY = 200;
