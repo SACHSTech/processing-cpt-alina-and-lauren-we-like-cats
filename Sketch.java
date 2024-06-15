@@ -2,6 +2,10 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 public class Sketch extends PApplet {
+
+  // Shop variables
+  int intBoxWidth = 160;
+  int intBoxHeight = 160;
 	
   // background and character PImages
   PImage background;
@@ -14,7 +18,6 @@ public class Sketch extends PApplet {
   int intDirection = 1;
 
   int intBGX;
-  //int inWorkerX = 2600;
 
   // starting position
   int intPosX = 100;
@@ -27,7 +30,9 @@ public class Sketch extends PApplet {
   // arrays for the animations and backgrounds
   PImage[] arrBackground = new PImage[3];
   PImage[] arrMC = new PImage[2];
+  PImage[] arrWorker = new PImage[3];
   int intFrame = 0;
+  int intWdWork = 0;
 
   // level to indicate background
   int intLevel = 2;
@@ -61,9 +66,13 @@ public class Sketch extends PApplet {
     arrMC[0] = loadImage("CatMCLeft.png");
     arrMC[1] = loadImage("CatMCRight.png");
 
-    woodworker = loadImage("WoodworkerCat.png");
+    arrWorker[0] = loadImage("WoodworkerCat.png");
+    arrWorker[1] = loadImage("WoodworkerCatGlow.png");
+    arrWorker[2] = loadImage("WoodworkerCatClick.png");
 
-    woodworker.resize(200, 200);
+    for (int i = 0; i < arrWorker.length; i++) {
+      arrWorker[i].resize(200, 200);
+    }
 
   }
 
@@ -73,7 +82,7 @@ public class Sketch extends PApplet {
   public void draw() {
 	  
     for (int i = 0; i < arrMC.length; i++){
-      arrMC[i].resize(charDimensions[intLevel][0], charDimensions[intLevel][1]);   
+      arrMC[i].resize(charDimensions[intLevel][0], charDimensions[intLevel][1]);
     }
 
     drawBackground();
@@ -88,10 +97,35 @@ public class Sketch extends PApplet {
   public void woodworker() {
 
     if (intLevel == 2) {
-      image(woodworker, 2000 + intBGX, 400);
-    }
-  
+      
+      woodworker = arrWorker[intWdWork];
 
+      image(woodworker, 2000 + intBGX, 400);
+
+      if (isHovering(2000 + intBGX, 400, woodworker.width, woodworker.height)) {
+        intWdWork = 1;
+        if (mousePressed) {
+          intWdWork = 2;
+        }
+      }
+      else {
+        intWdWork = 0;
+      }
+    }
+
+  }
+
+  /**
+   * Check if the mouse is hovering over something
+   * @param x The x-coordinates of the item envelope the x-coordinate of the mouse
+   * @param y The y-coordinates of the item envelope the y-coordinates of the mouse
+   * @param width The width added onto the x-coordinate for the other x-side
+   * @param height The height added onto the y-coordinate for the other y-side
+   * @return true or false of if the mouse is within the boundaries
+   */
+
+  public boolean isHovering(int x, int y, int width, int height) {
+    return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
   }
 
   public void drawBackground() {
