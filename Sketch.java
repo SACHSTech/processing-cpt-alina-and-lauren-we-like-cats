@@ -211,26 +211,24 @@ public class Sketch extends PApplet {
         }
       }
       if (intShopStatus >= 5) {
+        // press yes
         if (isHovering(itemCoordinates[5][0], itemCoordinates[5][1], 41, 19)) {
           // if have enough money
           if (mousePressed && intGold >= intCost) {
             intGold -= intCost;
             intWand = intShopStatus - 5;
             intShopStatus += 8;
-            if (isHovering(itemCoordinates[4][0], itemCoordinates[4][1], 67, 67)) {
-              if (mousePressed) {
-                intShopStatus = 0;
-              }
-            }
+            wait(100);
           }
           // not enough money
           else if (mousePressed && intGold < intCost) {
             intShopStatus += 4;
-            if (isHovering(itemCoordinates[4][0], itemCoordinates[4][1], 67, 67)) {
-              if (mousePressed) {
-                intShopStatus -= 4;
-              }
-            }
+            wait(100);
+          }
+          // exit either purchase or deny message
+          if (mousePressed) {
+            intShopStatus = 0;
+            wait(100);
           }
         }
         else if (isHovering(itemCoordinates[6][0], itemCoordinates[6][1], 27, 19)) {
@@ -241,6 +239,20 @@ public class Sketch extends PApplet {
       }
       shop = arrShop[intShopStatus];
       image(shop, 400, 50);
+    }
+  }
+
+  /**
+   * pauses the code for a specified amount of time. Used when the code may detect continuous 'mouse pressed' when it's
+   * only a click.
+   * @param milliseconds the amount of milliseconds the code needs to pause for.
+   */
+  public void wait(int milliseconds) {
+    try {
+      Thread.sleep(milliseconds); // Sleep for 1000 milliseconds (1 second)
+    } 
+    catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 
