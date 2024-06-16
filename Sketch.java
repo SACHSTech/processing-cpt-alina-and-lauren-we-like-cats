@@ -2,12 +2,10 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 public class Sketch extends PApplet {
-
-  // Shop variables
-  int intBoxWidth = 160;
-  int intBoxHeight = 160;
 	
   // background and character PImages
+  PImage shop;
+  PImage wand;
   PImage background;
   PImage character;
   PImage woodworker;
@@ -26,6 +24,30 @@ public class Sketch extends PApplet {
   
   // velocity for floating
   double dblVelY = 1;
+
+  // Shop variables
+  int intGold = 100;
+  int intCost = 0;
+
+  boolean blnShopOn = false;
+  int intShopStatus = 0;
+  int intBoxSide = 76;
+
+  PImage[] arrShop = new PImage[17];
+
+  int[][] itemCoordinates = {
+    {570, 196}, // The first stick
+    {722, 196}, // second stick
+    {570, 334}, // third stick
+    {722, 334}, // fourth stick
+    {921, 58}, // X button
+    {580, 572}, // Yes button
+    {781, 572} // No button
+  };
+
+  // Wands
+  PImage[] arrWand = new PImage[5];
+  int intWand = 0;
 
   // arrays for the animations and backgrounds
   PImage[] arrBackground = new PImage[3];
@@ -58,6 +80,38 @@ public class Sketch extends PApplet {
    * values here i.e background, stroke, fill etc.
    */
   public void setup() {
+
+    arrWand[0] = loadImage("Wand0.png");
+    arrWand[1] = loadImage("Wand1.png");
+    arrWand[2] = loadImage("Wand2.png");
+    arrWand[3] = loadImage("Wand3.png");
+    arrWand[4] = loadImage("Wand4.png");
+
+    for (int i = 0; i < arrWand.length; i++) {
+      arrWand[i].resize(70, 70);
+    }
+
+    arrShop[0] = loadImage("ShopScreenFull.png");
+    arrShop[1] = loadImage("ShopScreenHover1.png");
+    arrShop[2] = loadImage("ShopScreenHover2.png");
+    arrShop[3] = loadImage("ShopScreenHover3.png");
+    arrShop[4] = loadImage("ShopScreenHover4.png");
+    arrShop[5] = loadImage("ShopScreenClick1.png");
+    arrShop[6] = loadImage("ShopScreenClick2.png");
+    arrShop[7] = loadImage("ShopScreenClick3.png");
+    arrShop[8] = loadImage("ShopScreenClick4.png");
+    arrShop[9] = loadImage("ShopScreenDeny1.png");
+    arrShop[10] = loadImage("ShopScreenDeny2.png");
+    arrShop[11] = loadImage("ShopScreenDeny3.png");
+    arrShop[12] = loadImage("ShopScreenDeny4.png");
+    arrShop[13] = loadImage("ShopScreenBought1.png");
+    arrShop[14] = loadImage("ShopScreenBought2.png");
+    arrShop[15] = loadImage("ShopScreenBought3.png");
+    arrShop[16] = loadImage("ShopScreenBought4.png");
+
+    for (int i = 0; i< arrShop.length; i++) {
+      arrShop[i].resize(600, 600);
+    }
 
     arrBackground[0] = loadImage("Bedroom.png");
     arrBackground[1] = loadImage("Kitchen.jpg");
@@ -92,6 +146,8 @@ public class Sketch extends PApplet {
     woodworker();
 
     drawCharacter();
+
+    drawShop();
   }
 
   public void woodworker() {
@@ -106,6 +162,7 @@ public class Sketch extends PApplet {
         intWdWork = 1;
         if (mousePressed) {
           intWdWork = 2;
+          blnShopOn = true;
         }
       }
       else {
@@ -113,6 +170,78 @@ public class Sketch extends PApplet {
       }
     }
 
+  }
+
+  public void drawShop() {
+    if (blnShopOn) {
+      // if nothing has been clicked
+      if (intShopStatus < 5) {
+        if (isHovering(itemCoordinates[0][0], itemCoordinates[0][1], intBoxSide, intBoxSide)) {
+          intShopStatus = 1;
+          if (mousePressed) {
+            intShopStatus = 5;
+            intCost = 100;
+          }
+        }
+        else if (isHovering(itemCoordinates[1][0], itemCoordinates[1][1], intBoxSide, intBoxSide)) {
+          intShopStatus = 2;
+          if (mousePressed) {
+            intShopStatus = 6;
+            intCost = 200;
+          }
+        }
+        else if (isHovering(itemCoordinates[2][0], itemCoordinates[2][1], intBoxSide, intBoxSide)) {
+          intShopStatus = 3;
+          if (mousePressed) {
+            intShopStatus = 7;
+            intCost = 500;
+          }
+        }
+        else if (isHovering(itemCoordinates[3][0], itemCoordinates[3][1], intBoxSide, intBoxSide)) {
+          intShopStatus = 4;
+          if (mousePressed) {
+            intShopStatus = 8;
+            intCost = 1000;
+          }
+        }
+        else if (isHovering(itemCoordinates[4][0], itemCoordinates[4][1], 67, 67)) {
+          if (mousePressed) {
+            blnShopOn = false;
+          }
+        }
+      }
+      if (intShopStatus >= 5) {
+        if (isHovering(itemCoordinates[5][0], itemCoordinates[5][1], 41, 19)) {
+          // if have enough money
+          if (mousePressed && intGold >= intCost) {
+            intGold -= intCost;
+            intWand = intShopStatus - 5;
+            intShopStatus += 8;
+            if (isHovering(itemCoordinates[4][0], itemCoordinates[4][1], 67, 67)) {
+              if (mousePressed) {
+                intShopStatus = 0;
+              }
+            }
+          }
+          // not enough money
+          else if (mousePressed && intGold < intCost) {
+            intShopStatus += 4;
+            if (isHovering(itemCoordinates[4][0], itemCoordinates[4][1], 67, 67)) {
+              if (mousePressed) {
+                intShopStatus -= 4;
+              }
+            }
+          }
+        }
+        else if (isHovering(itemCoordinates[6][0], itemCoordinates[6][1], 27, 19)) {
+          if (mousePressed) {
+            intShopStatus = 0;
+          }
+        }
+      }
+      shop = arrShop[intShopStatus];
+      image(shop, 400, 50);
+    }
   }
 
   /**
