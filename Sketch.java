@@ -9,6 +9,7 @@ public class Sketch extends PApplet {
   PImage background;
   PImage character;
   PImage woodworker;
+  PImage SkeletonMap;
 
   // movement variables. Checking for keys pressed and direction faced
   boolean leftPressed = false;
@@ -43,8 +44,7 @@ public class Sketch extends PApplet {
     {722, 334}, // fourth stick
     {921, 58}, // X button
     {580, 572}, // Yes button
-    {781, 572}, // No button
-    {504, 456} // Description screen
+    {781, 572} // No button
   };
 
   // Wands
@@ -52,22 +52,29 @@ public class Sketch extends PApplet {
   int intWand = 0;
 
   // arrays for the animations and backgrounds
-  PImage[] arrBackground = new PImage[3];
+  PImage[] arrBackground = new PImage[4];
   PImage[] arrMC = new PImage[2];
   PImage[] arrWorker = new PImage[3];
   int intFrame = 0;
   int intWdWork = 0;
 
   // level to indicate background
-  int intLevel = 2;
+  int intLevel = 0;
 
   // Character size must change
   int[][] charDimensions = {
     {807/2, 428},
     {807/2, 428},
-    {807/4, 214}
+    {807/4, 214},
+    {807/8, 107}
   };
 	
+  // Enemies
+  PImage enemy1;
+  PImage enemy2;
+  PImage enemy3;
+  PImage[] arrEnemy = new PImage[2];
+  int inEnemyFrame = 0;
 
   /**
    * Called once at the beginning of execution, put your size all in this method
@@ -118,6 +125,7 @@ public class Sketch extends PApplet {
     arrBackground[0] = loadImage("Bedroom.png");
     arrBackground[1] = loadImage("Kitchen.jpg");
     arrBackground[2] = loadImage("Town.png");
+    arrBackground[3] = loadImage("Forest.png");
 
     arrMC[0] = loadImage("CatMCLeft.png");
     arrMC[1] = loadImage("CatMCRight.png");
@@ -128,6 +136,13 @@ public class Sketch extends PApplet {
 
     for (int i = 0; i < arrWorker.length; i++) {
       arrWorker[i].resize(200, 200);
+    }
+
+    arrEnemy[0] = loadImage("EnemyLeft.png");
+    arrEnemy[1] = loadImage("EnemyRight.png");
+
+    for (int i = 0; i < arrEnemy.length; i++) {
+      arrEnemy[i].resize(100, 100);
     }
 
   }
@@ -141,9 +156,9 @@ public class Sketch extends PApplet {
       arrMC[i].resize(charDimensions[intLevel][0], charDimensions[intLevel][1]);
     }
 
-    drawBackground();
-
     movement();
+
+    drawBackground();
 
     woodworker();
 
@@ -291,6 +306,10 @@ public class Sketch extends PApplet {
       intBGX = -100 - intPosX;
       image(background, intBGX, 0);
     }
+    else if (intLevel == 3) {
+      intBaseY = 500;
+      image(background, 0, 0);
+    }
   }
 
   /**
@@ -388,5 +407,10 @@ public class Sketch extends PApplet {
     else if (key == 'w' && intLevel == 3) {
       upPressed = false;
     }
+  }
+
+  
+  public void drawEnemy1() {
+    
   }
 }
