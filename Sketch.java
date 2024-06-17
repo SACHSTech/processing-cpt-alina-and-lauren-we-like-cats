@@ -13,6 +13,7 @@ public class Sketch extends PApplet {
   // movement variables. Checking for keys pressed and direction faced
   boolean leftPressed = false;
   boolean rightPressed = false;
+  boolean upPressed = false;
   int intDirection = 1;
 
   int intBGX;
@@ -42,7 +43,8 @@ public class Sketch extends PApplet {
     {722, 334}, // fourth stick
     {921, 58}, // X button
     {580, 572}, // Yes button
-    {781, 572} // No button
+    {781, 572}, // No button
+    {504, 456} // Description screen
   };
 
   // Wands
@@ -150,6 +152,9 @@ public class Sketch extends PApplet {
     drawShop();
   }
 
+  /**
+   * Draw the woodworker, placement depends on the x-coordinate of the background.
+   */
   public void woodworker() {
 
     if (intLevel == 2) {
@@ -172,6 +177,9 @@ public class Sketch extends PApplet {
 
   }
 
+  /**
+   * Drawing the shop.
+   */
   public void drawShop() {
     if (blnShopOn) {
       // if nothing has been clicked
@@ -225,16 +233,16 @@ public class Sketch extends PApplet {
             intShopStatus += 4;
             wait(100);
           }
-          // exit either purchase or deny message
-          if (mousePressed) {
-            intShopStatus = 0;
-            wait(100);
-          }
         }
+        // press no
         else if (isHovering(itemCoordinates[6][0], itemCoordinates[6][1], 27, 19)) {
           if (mousePressed) {
             intShopStatus = 0;
           }
+        }
+        // exit either purchase or deny message
+        if (keyPressed && key == 'e') {
+          intShopStatus = 0;
         }
       }
       shop = arrShop[intShopStatus];
@@ -264,11 +272,13 @@ public class Sketch extends PApplet {
    * @param height The height added onto the y-coordinate for the other y-side
    * @return true or false of if the mouse is within the boundaries
    */
-
   public boolean isHovering(int x, int y, int width, int height) {
     return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
   }
 
+  /**
+   * Drawing the background depending on the level, making sure the moving backgrounds are properly drawn.
+   */
   public void drawBackground() {
     background = arrBackground[intLevel];
 
@@ -283,6 +293,9 @@ public class Sketch extends PApplet {
     }
   }
 
+  /**
+   * draws the character with hover and direction faced
+   */
   public void drawCharacter() {
 
     if(intDirection == 1){
@@ -306,9 +319,10 @@ public class Sketch extends PApplet {
     image(character, intPosX, intPosY);
 
   }
-  
-  // define other methods down here.
 
+  /**
+   * Movement based on keyPressed and keyReleased
+   */
   public void movement() {
 
     if (leftPressed) {
@@ -344,6 +358,9 @@ public class Sketch extends PApplet {
 
   }
 
+  /**
+   * to check if the specified key is pressed
+   */
   public void keyPressed() {
     if (key == 'a') {
       leftPressed = true;
@@ -353,14 +370,23 @@ public class Sketch extends PApplet {
       rightPressed = true;
       intDirection = 1;
     }
+    else if (key == 'w' && intLevel == 3) {
+      upPressed = true;
+    }
   }
   
+  /**
+   * to check if the specified key is released
+   */
   public void keyReleased() {
     if (key == 'a') {
       leftPressed = false;
     }
     else if (key == 'd') {
       rightPressed = false;
+    }
+    else if (key == 'w' && intLevel == 3) {
+      upPressed = false;
     }
   }
 }
