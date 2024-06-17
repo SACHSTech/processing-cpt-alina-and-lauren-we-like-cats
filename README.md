@@ -1,5 +1,7 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/B2OnycBl)
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=15143628&assignment_repo_type=AssignmentRepo)
-# Program Title (edit this)
+# Cat's Rule the World
 
-Put your program description here.
+Defeat the enemies (dogs) and take control of the world from them. The HP bar would have been in the top right, and the amount of gold should have been in the top left. There would have been dogs (EnemyLeft.png and EnemyRight.png files) in the forest and another level + the boss fight in another house. Played using wasd and the cat can levitate. A 2D platformer on the first two levels and in the boss fight similar to a pokemon battle. Can buy different wands, first enemies would have dropped around 50-75 gold, second level enemies would drop 100-125 gold. The images of all shop scenarios, the most prominent feature in this game that has been created, show how it would look for every scenario in the shop.
+
+*This should have been a collaborative work, however, it has become a solo project for a game that takes two people.*
